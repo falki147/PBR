@@ -1,0 +1,39 @@
+apply plugin: 'java'
+apply plugin: 'distribution'
+
+project.ext.lwjglVersion = '3.2.0'
+project.ext.jomlVersion = '1.9.12'
+project.ext.lwjglNatives = 'natives-windows'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.lwjgl:lwjgl:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+    compile "org.lwjgl:lwjgl-stb:$lwjglVersion"
+    compile "org.lwjgl:lwjgl:$lwjglVersion:$lwjglNatives"
+    compile "org.lwjgl:lwjgl-glfw:$lwjglVersion:$lwjglNatives"
+    compile "org.lwjgl:lwjgl-opengl:$lwjglVersion:$lwjglNatives"
+    compile "org.lwjgl:lwjgl-stb:$lwjglVersion:$lwjglNatives"
+    compile "org.joml:joml:${jomlVersion}"
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.preinfalk.PBR.Main'
+        attributes 'Class-Path': configurations.runtime.collect { "lib/${it.getName()}" }.join(' ')
+    }
+}
+
+distributions {
+    main {
+        contents {
+            from jar
+            into 'lib', { from configurations.runtime }
+            into 'dist', { from 'dist' }
+        }
+    }
+}
