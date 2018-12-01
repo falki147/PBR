@@ -215,7 +215,7 @@ public class Shader implements Closeable {
         if (entry == null) {
             int loc = glGetUniformLocation(program, name);
 
-            if (loc != 0) {
+            if (loc >= 0) {
                 if (numIndices >= GL_MAX_TEXTURE_UNITS)
                     throw new RuntimeException("too many textures set");
 
